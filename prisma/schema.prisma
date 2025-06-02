@@ -71,3 +71,21 @@ model HomePageSectionToggle {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
+
+model User {
+  id                 String  @id @default(cuid())
+  clerkUserId        String  @unique
+  fullName           String
+  phoneNumber        String  @unique @db.VarChar(15)
+  cityOfResidence    String?
+  email              String  @unique
+  courseInterestedIn String?
+  isDistanceLearning Boolean @default(false)
+  levelLookingFor    String?
+
+  role               String  @default("user")
+  profilePictureUrl  String? @db.VarChar(255)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

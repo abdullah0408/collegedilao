@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ImageKitProvider } from "@imagekit/next";
+import { AuthProvider } from "@/contexts/AuthContext";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 
@@ -38,19 +39,21 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <ImageKitProvider
-            urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!}
+      <AuthProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            <Header />
-            {children}
-            <Footer />
-          </ImageKitProvider>
-        </body>
-      </html>
+            <ImageKitProvider
+              urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!}
+            >
+              <Header />
+              {children}
+              <Footer />
+            </ImageKitProvider>
+          </body>
+        </html>
+      </AuthProvider>
     </ClerkProvider>
   );
 }

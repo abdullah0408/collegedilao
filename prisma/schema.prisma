@@ -7,3 +7,67 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model HomePageCity {
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  count    Int
+  imageUrl String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HomePageHeroImage {
+  id       Int    @id @default(autoincrement())
+  image    String
+  title    String
+  subtitle String
+  ctaText  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HomePageStat {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HomePageUniversityLogo {
+  id   Int    @id @default(autoincrement())
+  name String
+  logo String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HomePageYouTubeShort {
+  id       Int    @id @default(autoincrement())
+  videoUrl String
+  title    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum SectionName {
+  CITIES
+  HERO_BANNER
+  STATS
+  UNIVERSITY_MARQUEE
+  YOUTUBE_SHORTS
+}
+
+model HomePageSectionToggle {
+  section  SectionName @id
+  isActive Boolean     @default(true)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}

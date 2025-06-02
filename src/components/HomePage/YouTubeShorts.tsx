@@ -129,7 +129,8 @@ const YouTubeShorts = ({ shorts, bg }: YouTubeShortsProps) => {
 
 // Helper function to extract video ID from a full YouTube URL
 function extractVideoId(url: string): string {
-  const match = url.match(/(?:v=|\.be\/)([a-zA-Z0-9_-]{11})/);
+  const regex = /(?:youtube\.com\/(?:.*v=|v\/|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  const match = url.match(regex);
   return match?.[1] ?? "";
 }
 

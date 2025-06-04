@@ -5,7 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ImageKitProvider } from "@imagekit/next";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import Header from "@/components/navbar/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

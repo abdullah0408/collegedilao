@@ -104,7 +104,7 @@ export default function UserMenu({ className = "" }: UserMenuProps) {
         <DropdownMenuItem asChild>
           <Button
             variant="ghost"
-            className="text-red-600 flex items-center gap-2"
+            className="text-red-600 w-full flex justify-start items-center gap-2"
             onClick={() => signOut().then(() => window.location.reload())}
           >
             <LogOut className="h-4 w-4 text-red-600" /> Logout

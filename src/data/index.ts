@@ -20,3 +20,12 @@ export * from "./footerData";
  *   import { flatNavItems, navSections, navResourcesItems, navLinks } from "@/data";
  */
 export * from "./navData";
+
+/**
+ * Re-export everything from `authModelData.ts`.
+ * Makes `Courses`, and `targetedEducationLevel` available via `@/data`.
+ *
+ * Example:
+ *   import { Courses, targetedEducationLevel } from "@/data";
+ */
+export * from "./authModelData";

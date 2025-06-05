@@ -6,6 +6,7 @@ import { ImageKitProvider } from "@imagekit/next";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Footer from "@/components/Footer";
 import Header from "@/components/navbar/Header";
+import { AuthModalProvider } from "@/contexts/AuthModalContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,17 +42,19 @@ export default function RootLayout({
     <ClerkProvider>
       <AuthProvider>
         <html lang="en">
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
-            <ImageKitProvider
-              urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!}
+          <AuthModalProvider>
+            <body
+              className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-              <Header />
-              {children}
-              <Footer />
-            </ImageKitProvider>
-          </body>
+              <ImageKitProvider
+                urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT!}
+              >
+                <Header />
+                {children}
+                <Footer />
+              </ImageKitProvider>
+            </body>
+          </AuthModalProvider>
         </html>
       </AuthProvider>
     </ClerkProvider>

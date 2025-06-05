@@ -35,6 +35,7 @@ interface HeroImage {
   title: string;
   subtitle: string;
   ctaText: string;
+  url: string;
 }
 
 interface StatsData {
@@ -97,6 +98,7 @@ export default async function HomePage() {
     title: h.title,
     subtitle: h.subtitle,
     ctaText: h.ctaText,
+    url: h.url,
   }));
 
   //

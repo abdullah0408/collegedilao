@@ -7,9 +7,11 @@ import UserMenu from "./UserMenu";
 import MobileNav from "./MobileNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { useAuthModal } from "@/hooks/useAuthModel";
 
 const HeaderRight = () => {
   const isMobile = useIsMobile();
+  const { openAuthModal } = useAuthModal();
 
   return (
     <div className="flex items-center justify-end p-4 gap-3">
@@ -20,14 +22,13 @@ const HeaderRight = () => {
       </SignedIn>
 
       <SignedOut>
-        <Link href="/sign-in">
-          <Button
-            variant="outline"
-            className="bg-blue-600 hover:bg-blue-700 text-white hover:text-white md:inline-flex"
-          >
-            Sign In
-          </Button>
-        </Link>
+        <Button
+          onClick={openAuthModal}
+          variant="outline"
+          className="bg-blue-600 hover:bg-blue-700 text-white hover:text-white md:inline-flex"
+        >
+          Sign In
+        </Button>
       </SignedOut>
 
       {!isMobile && (

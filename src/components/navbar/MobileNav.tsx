@@ -11,9 +11,11 @@ import AccordionNavSections from "./AccordionNavSections";
 import AccountLinks from "./AccountLinks";
 import { flatNavItems, navSections } from "@/data";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { useAuthModal } from "@/hooks/useAuthModel";
 
 const MobileNav = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { openAuthModal } = useAuthModal();
 
   return (
     <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -33,6 +35,7 @@ const MobileNav = () => {
         <SignedOut>
           <div className="pt-4" />
           <Button
+            onClick={openAuthModal}
             variant="outline"
             className="bg-blue-600 hover:bg-blue-700 text-white hover:text-white md:inline-flex"
           >

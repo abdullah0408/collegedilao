@@ -24,6 +24,7 @@ model HomePageHeroImage {
   title    String
   subtitle String
   ctaText  String
+  url      String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

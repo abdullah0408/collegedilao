@@ -1,16 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Image } from "@imagekit/next";
 import { useState } from "react";
+import ProtectedButton from "../ProtectedButton";
+import Link from "next/link";
 
 interface HeroImage {
   image: string;
   title: string;
   subtitle: string;
   ctaText: string;
+  url: string;
 }
 
 interface HeroBannerProps {
@@ -50,12 +52,14 @@ const HeroBanner = ({ data }: HeroBannerProps) => {
                 <p className="text-base md:text-xl mb-4 md:mb-8 max-w-2xl animate-fade-in">
                   {banner.subtitle}
                 </p>
-                <Button
+                <ProtectedButton
                   size={isMobile ? "default" : "lg"}
                   className="animate-fade-in bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  {banner.ctaText} <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                  <Link href={banner.url} className="flex items-center">
+                    {banner.ctaText} <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </ProtectedButton>
               </div>
             </div>
           ))}

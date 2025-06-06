@@ -84,9 +84,100 @@ model User {
   isDistanceLearning Boolean @default(false)
   levelLookingFor    String?
 
-  role               String  @default("user")
-  profilePictureUrl  String? @db.VarChar(255)
+  role              String  @default("user")
+  profilePictureUrl String? @db.VarChar(255)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model EntityTypeLookup {
+  code     String   @id // "UNIVERSITY", "COLLEGE", etc.
+  entities Entity[]
+}
+
+model OwnershipTypeLookup {
+  code     String   @id // "GOVERNMENT", "PRIVATE", etc.
+  entities Entity[]
+}
+
+enum GenderAccepted {
+  GIRLS
+  BOYS
+  COED
+}
+
+model CityLookup {
+  id       Int         @id @default(autoincrement())
+  name     String
+  state    StateLookup @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  stateId  Int
+  entities Entity[]    @relation("EntityCity")
+}
+
+model StateLookup {
+  id       Int          @id @default(autoincrement())
+  name     String       @unique
+  cities   CityLookup[]
+  entities Entity[]     @relation("EntityState")
+}
+
+model Entity {
+  id                Int                 @id @default(autoincrement())
+  name              String              @unique
+  slug              String              @unique
+  type              EntityTypeLookup    @relation(fields: [typeCode], references: [code], onDelete: Cascade)
+  typeCode          String
+  ownershipType     OwnershipTypeLookup @relation(fields: [ownershipTypeCode], references: [code], onDelete: Cascade)
+  ownershipTypeCode String
+  establishedYear   Int
+  area              Int?
+  genderAccepted    GenderAccepted
+
+  address String?
+  city    CityLookup  @relation("EntityCity", fields: [cityId], references: [id], onDelete: Cascade)
+  cityId  Int
+  state   StateLookup @relation("EntityState", fields: [stateId], references: [id], onDelete: Cascade)
+  stateId Int
+  pincode String?
+  country String      @default("India")
+
+  website   String   @db.VarChar(2083)
+  instagram String?
+  facebook  String?
+  twitter   String?
+  linkedin  String?
+  phone     String[]
+  email     String[]
+
+  logo           String? @default("default-logo.png")
+  banner         String? @default("default-banner.png")
+  brochure       String?
+  hostelBrochure String?
+  naacGrade      String?
+  nirfRank       Int?
+  info           String?
+  description    String
+
+  avgFee     Int?
+  avgPackage Int?
+
+  approvals EntityApproval[] @relation("EntityApprovals")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EntityApproval {
+  id               Int                @id @default(autoincrement())
+  entity           Entity             @relation("EntityApprovals", fields: [entityId], references: [id], onDelete: Cascade)
+  entityId         Int
+  approvalBody     ApprovalBodyLookup @relation(fields: [approvalBodyCode], references: [code], onDelete: Cascade)
+  approvalBodyCode String
+  grade            String?
+}
+
+model ApprovalBodyLookup {
+  code      String           @id // "AICTE", "UGC", etc.
+  approvals EntityApproval[]
 }

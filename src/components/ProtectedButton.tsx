@@ -6,6 +6,7 @@ import { useAuthModal } from "@/hooks/useAuthModel";
 
 interface ProtectedButtonProps {
   size?: "default" | "sm" | "lg" | "icon";
+  variant?: "default" | "outline" | "ghost" | "link";
   onClick?: () => void;
   className?: string;
   children: React.ReactNode;
@@ -27,6 +28,7 @@ export default function ProtectedButton({
   size = "default",
   onClick,
   className,
+  variant = "default",
   children,
 }: ProtectedButtonProps) {
   const { isLoaded, isSignedIn } = useUser();
@@ -41,7 +43,12 @@ export default function ProtectedButton({
   };
 
   return (
-    <Button size={size} onClick={handleClick} className={className}>
+    <Button
+      size={size}
+      variant={variant}
+      onClick={handleClick}
+      className={className}
+    >
       {children}
     </Button>
   );

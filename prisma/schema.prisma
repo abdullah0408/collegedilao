@@ -164,6 +164,7 @@ model Entity {
 
   approvals EntityApproval[] @relation("EntityApprovals")
   gallery   Gallery[]
+  courses   Course[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -188,4 +189,65 @@ model EntityApproval {
 model ApprovalBodyLookup {
   code      String           @id // "AICTE", "UGC", etc.
   approvals EntityApproval[]
+}
+
+model CourseCodeLookup {
+  code    String         @id // e.g., "MBA", "B.TECH"
+  lookups CourseLookup[] @relation("CodeToCourseLookup")
+}
+
+model CourseCategoryLookup {
+  code    String         @id // e.g., "ENGINEERING", "MANAGEMENT"
+  lookups CourseLookup[] @relation("CategoryToCourseLookup")
+}
+
+model CourseTypeLookup {
+  code    String         @id // e.g., "UNDERGRADUATE", "POSTGRADUATE"
+  lookups CourseLookup[] @relation("TypeToCourseLookup")
+}
+
+model EnteranceExamLookup {
+  name    String   @id // e.g., "JEE", "CAT", "GATE"
+  courses Course[] @relation("CourseToEntranceExams")
+}
+
+model CourseLookup {
+  id   Int    @id @default(autoincrement())
+  code String // e.g., "MBA", "B.Tech CSE"
+
+  courseCode     CourseCodeLookup @relation("CodeToCourseLookup", fields: [courseCodeCode], references: [code])
+  courseCodeCode String // e.g., "MBA", "B.TECH"
+
+  category     CourseCategoryLookup @relation("CategoryToCourseLookup", fields: [categoryCode], references: [code])
+  categoryCode String // e.g., "MANAGEMENT", "ENGINEERING"
+
+  type     CourseTypeLookup @relation("TypeToCourseLookup", fields: [typeCode], references: [code])
+  typeCode String // e.g., "POSTGRADUATE", "UNDERGRADUATE"
+
+  courses Course[] @relation("CourseLookupToCourse")
+}
+
+model Course {
+  id       Int @id @default(autoincrement())
+  duration Int 
+
+  fee Int[] @default([10000, 10000, 10000])
+
+  courseLookup   CourseLookup @relation("CourseLookupToCourse", fields: [courseLookupId], references: [id])
+  courseLookupId Int
+
+  entity   Entity @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  entityId Int @default(1)
+
+  info String?
+  applicationStartDate DateTime?
+  applicationEndDate DateTime?
+  tags String[] @default(["popular", "new", "recommended"])
+
+  avgPackage Int? // average package in INR
+  eligibility String[] @default(["10+2", "Graduation", "Post Graduation"])
+
+  entranceExams EnteranceExamLookup[] @relation("CourseToEntranceExams")
+
+  createdAt DateTime @default(now())
 }

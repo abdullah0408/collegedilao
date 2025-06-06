@@ -39,7 +39,6 @@ const GalleryTab = () => {
         const res = await fetch(`/api/colleges/gallery/${params.collegeSlug}`);
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
-        console.log("Fetched gallery data:", data);
         // data.images is an array of { src, caption }
         // We add a placeholder aspectRatio = 1 for now
         const prepared: FetchedImage[] = data.images.map((img: any) => ({

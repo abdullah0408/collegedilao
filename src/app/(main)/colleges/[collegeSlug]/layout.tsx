@@ -9,7 +9,6 @@ import { Metadata } from "next";
 export const revalidate = 86400; // Revalidate this layout every 24 hours
 
 const getEntity = cache(async (collegeSlug: string) => {
-  console.log(`[${new Date().toISOString()}] Prisma fetching: ${collegeSlug}`); // [CHECK] revalidation logs
   //
   // Fetch the basic “entity” data from Prisma.
   //

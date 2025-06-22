@@ -90,32 +90,39 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   };
 
   // ─── STATE & CITY ────────────────────────────────────────────────────────────
-  const toggleState = (stateId: number) => {
-    const newStates = statesArr.includes(stateId)
-      ? statesArr.filter((s) => s !== stateId)
-      : [...statesArr, stateId];
+const toggleState = (stateId: number) => {
+  const newStates = statesArr.includes(stateId)
+    ? statesArr.filter((s) => s !== stateId)
+    : [...statesArr, stateId];
 
-    // If a state is unselected, purge any city from that state
-    const survivingCities = citiesArr.filter((cityId) => {
-      // find which state this city belongs to
-      const stateObj = states.find((st) => st.id === stateId);
-      // Actually, rebuild from scratch: keep only cities whose stateId is in newStates
-      const cityObj = states
-        .flatMap((st) => st.cities)
-        .find((c) => c.id === cityId);
-      return cityObj && newStates.includes(cityObj?.stateId);
-    });
+  // Keep only those previously-selected cities whose parent state is still in newStates
+  const survivingCities = citiesArr.filter((cityId) => {
+    // find the state that has this city
+    const parentState = states.find((st) =>
+      st.cities.some((c) => c.id === cityId)
+    );
+    return parentState && newStates.includes(parentState.id);
+  });
 
-    onFilterChange(buildFullFilters({ states: newStates, cities: survivingCities }));
-  };
+  onFilterChange(
+    buildFullFilters({
+      states: newStates,
+      cities: survivingCities,
+    })
+  );
+};
 
   // AvailableCities = all cities in the chosen states
-  const availableCities = useMemo(() => {
-    return states
-      .filter((st) => statesArr.includes(st.id))
-      .flatMap((st) => st.cities);
-  }, [statesArr]);
-
+const availableCities = useMemo(() => {
+  return states
+    .filter((st) => statesArr.includes(st.id))
+    .flatMap((st) =>
+      st.cities.map((ct) => ({
+        ...ct,
+        stateId: st.id,
+      }))
+    );
+}, [statesArr]);
   const toggleCity = (cityId: number) => {
     const newCities = citiesArr.includes(cityId)
       ? citiesArr.filter((c) => c !== cityId)
